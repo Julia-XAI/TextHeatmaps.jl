@@ -5,15 +5,15 @@ const DEFAULT_RANGESCALE = :centered
     heatmap(values, words; kwargs...)
     heatmap(values, words, colors)
 
-Create a heatmap of words, where the background color of each word is determined by its corresponding value.
-Arguments `values` and `words` (and optionally `colors`) must have the same length.
+Create a heatmap of words where the background color of each word is determined by its corresponding value.
+Arguments `values` and `words` (and optionally `colors`) must have the same size.
 
 ## Keyword arguments
 - `cs::ColorScheme`: color scheme from ColorSchemes.jl that is applied to create the heatmap.
   Defaults to `ColorSchemes.seismic`.
 - `rangescale::Symbol`: selects how the color channel reduced heatmap is normalized
-  before the color scheme is applied. Can be either :extrema or :centered.
-  Defaults to `:centered` for use with the `seismic` default color scheme.
+  before the color scheme is applied. Can be either `:extrema` or `:centered`.
+  Defaults to `:centered` for use with the default color scheme `seismic`.
 """
 function heatmap(val, words::AbstractArray{<:AbstractString}; kwargs...)
     return TextHeatmap(val, words; kwargs...)
