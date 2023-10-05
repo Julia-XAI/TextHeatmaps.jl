@@ -23,7 +23,7 @@ end
 # such that we can show the heatmap both in the terminal and as HTML output in notebooks.
 
 struct TextHeatmap{
-    V<:AbstractArray{<:Real},W<:AbstractArray{<:AbstractString},C<:AbstractArray{<:Colorant}
+    V<:AbstractArray{<:Real},W<:AbstractArray{<:AbstractString},C<:AbstractArray{<:RGB}
 }
     val::V
     words::W
@@ -32,7 +32,7 @@ struct TextHeatmap{
         if size(words) != size(val) || size(words) != size(colors)
             throw(ArgumentError("Sizes of values, words and colors don't match"))
         end
-        colors = convert.(RGB{N0f8}, colors)
+        colors = convert.(RGB, colors)
         return new{typeof(val),typeof(words),typeof(colors)}(val, words, colors)
     end
 end
