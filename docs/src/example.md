@@ -24,10 +24,10 @@ heatmap(val, words)
 We can use a custom color scheme from ColorSchemes.jl using the keyword argument cs:
 ```@example 1
 using ColorSchemes
-heatmap(val, words; cs=ColorSchemes.jet)
+heatmap(val, words; colorscheme=ColorSchemes.jet)
 ```
 ```@example 1
-heatmap(val, words; cs=ColorSchemes.inferno)
+heatmap(val, words; colorscheme=ColorSchemes.inferno)
 ```
 
 ## Mapping values onto the color scheme
@@ -55,11 +55,11 @@ heatmap(val, words; rangescale=:extrema)
 However, for the `inferno` color scheme, which is not centered around zero, `:extrema` leads to a heatmap with higher contrast.
 
 ```@example 1
-heatmap(val, words; cs=ColorSchemes.inferno, rangescale=:centered)
+heatmap(val, words; colorscheme=ColorSchemes.inferno, rangescale=:centered)
 ```
 
 ```@example 1
-heatmap(val, words; cs=ColorSchemes.inferno, rangescale=:extrema)
+heatmap(val, words; colorscheme=ColorSchemes.inferno, rangescale=:extrema)
 ```
 
 ## Terminal support

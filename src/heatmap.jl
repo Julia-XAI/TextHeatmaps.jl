@@ -8,7 +8,7 @@ Create a heatmap of words where the background color of each word is determined 
 Arguments `values` and `words` (and optionally `colors`) must have the same size.
 
 ## Keyword arguments
-- `cs::ColorScheme`: color scheme from ColorSchemes.jl that is applied to create the heatmap.
+- `colorscheme::ColorScheme`: color scheme from ColorSchemes.jl.
   Defaults to `ColorSchemes.seismic`.
 - `rangescale::Symbol`: selects how the color channel reduced heatmap is normalized
   before the color scheme is applied. Can be either `:extrema` or `:centered`.
@@ -37,12 +37,12 @@ struct TextHeatmap{
 end
 
 function TextHeatmap(
-    val, words; cs::ColorScheme=DEFAULT_COLORSCHEME, rangescale=DEFAULT_RANGESCALE
+    val, words; colorscheme::ColorScheme=DEFAULT_COLORSCHEME, rangescale=DEFAULT_RANGESCALE
 )
     if size(val) != size(words)
         throw(ArgumentError("Sizes of values and words don't match"))
     end
-    colors = get(cs, val, rangescale)
+    colors = get(colorscheme, val, rangescale)
     return TextHeatmap(val, words, colors)
 end
 

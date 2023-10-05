@@ -16,9 +16,9 @@ using Aqua
         words = ["Test", "TextHeatmaps"]
         val = [4.2, -1.0]
 
-        cs = TextHeatmaps.seismic
-        cmin = get(cs, 0) # red
-        cmax = get(cs, 1) # blue
+        colorscheme = TextHeatmaps.seismic
+        cmin = get(colorscheme, 0) # red
+        cmax = get(colorscheme, 1) # blue
 
         # Test default ColorScheme seismic
         h = heatmap(val, words)
@@ -33,10 +33,10 @@ using Aqua
         @test_reference "references/seismic_extrema.txt" repr("text/plain", h)
 
         # Test other colorschemes
-        cs = ColorSchemes.inferno
-        h = heatmap(val, words; cs=cs, rangescale=:centered)
+        colorscheme = ColorSchemes.inferno
+        h = heatmap(val, words; colorscheme=colorscheme, rangescale=:centered)
         @test_reference "references/inferno_centered.txt" repr("text/plain", h)
-        h = heatmap(val, words; cs=cs, rangescale=:extrema)
+        h = heatmap(val, words; colorscheme=colorscheme, rangescale=:extrema)
         @test_reference "references/inferno_extrema.txt" repr("text/plain", h)
 
         # Test errors
