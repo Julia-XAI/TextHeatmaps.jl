@@ -28,14 +28,15 @@ Using the heatmap function, we can visualize the values:
 
 ![Heatmap in Julia-REPL][heatmap-repl]
 
-This not only works in the REPL, but also works in Pluto notebooks and Documenter:
+This not only works in the REPL, but also as HTML output in notebooks and on websites:
 
 ![Heatmap in Pluto][heatmap-pluto]
 
-The color scheme of the `heatmap` can be customized, as shown in the 
-[package documentation](https://Julia-XAI.github.io/TextHeatmaps.jl/stable/):
+The color scheme of the `heatmap` is customizable:
 
 ![Heatmap in Documenter][heatmap-settings]
+
+For more information, refer to the [package documentation](https://Julia-XAI.github.io/TextHeatmaps.jl/stable/).
 
 [heatmap-repl]: https://raw.githubusercontent.com/Julia-XAI/TextHeatmaps.jl/gh-pages/assets/heatmap_repl.png
 [heatmap-pluto]: https://raw.githubusercontent.com/Julia-XAI/TextHeatmaps.jl/gh-pages/assets/heatmap_pluto.png
