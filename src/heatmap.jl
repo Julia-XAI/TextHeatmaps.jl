@@ -2,8 +2,7 @@ const DEFAULT_COLORSCHEME = seismic
 const DEFAULT_RANGESCALE = :centered
 
 """
-    heatmap(values, words; kwargs...)
-    heatmap(values, words, colors)
+    heatmap(values, words)
 
 Create a heatmap of words where the background color of each word is determined by its corresponding value.
 Arguments `values` and `words` (and optionally `colors`) must have the same size.
@@ -81,16 +80,13 @@ luma(c::RGB) = 0.2126 * c.r + 0.7152 * c.g + 0.0722 * c.b # using BT. 709 coeffi
 
 # Used e.g. in Pluto notebooks
 function Base.show(io::IO, ::MIME"text/html", h::TextHeatmap)
+    print(io, "<p><heatmap>")
     for (word, color) in zip(h.words, h.colors)
         bg = hex(color)
         fg = is_background_bright(color) ? "black" : "white"
 
-        style = """
-        	background-color: #$bg;
-        	color: $fg;
-        	padding: 0.2em;
-        	margin: 0.2em;
-        """
-        print(io, """<heatmap style="$style">$word</heatmap>""")
+        style = "background-color: #$bg; color: $fg; padding: 0.2em; margin: 0.2em;"
+        print(io, """<heatmap-word style="$style">$word</heatmap-word>""")
     end
+    print(io, "</heatmap></p>")
 end
