@@ -52,7 +52,6 @@ end
 
 Base.show(io::IO, h::TextHeatmap) = print_heatmap(io, h)
 
-print_heatmap(h::TextHeatmap) = print_heatmap(stdout, h)
 function print_heatmap(io::IO, h::TextHeatmap)
     for (word, color) in zip(h.words, h.colors)
         print(io, set_crayon(color), word)
@@ -67,10 +66,8 @@ function set_crayon(bg::RGB{N0f8})
     return Crayon(; background=background, foreground=foreground)
 end
 
-get_color_indices(c::Colorant) = get_color_indices(convert(RGB{N0f8}, c))
 get_color_indices(c::RGB{N0f8}) = (c.r.i, c.g.i, c.b.i)
 
-is_background_bright(bg::Colorant) = is_background_bright(convert(RGB, bg))
 is_background_bright(bg::RGB) = luma(bg) > 0.5
 luma(c::RGB) = 0.2126 * c.r + 0.7152 * c.g + 0.0722 * c.b # using BT. 709 coefficients
 
