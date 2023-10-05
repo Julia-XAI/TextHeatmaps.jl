@@ -25,6 +25,7 @@ using Aqua
         @test h.colors[1] ≈ cmax
         @test h.colors[2] != cmin
         @test_reference "references/seismic_centered.txt" repr("text/plain", h)
+        @test_reference "references/seismic_centered_html.txt" repr("text/html", h)
 
         h = heatmap(val, words; rangescale=:extrema)
         @test h.colors[1] ≈ cmax

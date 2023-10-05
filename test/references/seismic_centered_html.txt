@@ -1,0 +1,1 @@
+<p><heatmap><heatmap-word style="background-color: #800000; color: white; padding: 0.2em; margin: 0.2em;">Test</heatmap-word><heatmap-word style="background-color: #8686FF; color: black; padding: 0.2em; margin: 0.2em;">TextHeatmaps</heatmap-word></heatmap></p>
