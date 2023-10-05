@@ -9,7 +9,7 @@ The model returns a vector of sentiment scores for each word,
 where positive values indicate positive sentiment 
 and negative values indicate negative sentiment:
 ```@example 1;
-val = [0.1, 2.5, 0.0, 0.3, -0.6, -1.4, 0.0, 0.1, -0.3]
+val = [0.1, 2.5, 0.0, 0.3, -0.6, -1.4, 0.0, 0.1, -0.1]
 nothing #hide
 ```
 
