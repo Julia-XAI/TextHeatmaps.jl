@@ -14,7 +14,9 @@ Arguments `values` and `words` (and optionally `colors`) must have the same size
   before the color scheme is applied. Can be either `:extrema` or `:centered`.
   Defaults to `:centered` for use with the default color scheme `seismic`.
 """
-function heatmap(val, words::AbstractArray{<:AbstractString}; kwargs...)
+function heatmap(
+    val::AbstractArray{<:Real}, words::AbstractArray{<:AbstractString}; kwargs...
+)
     return TextHeatmap(val, words; kwargs...)
 end
 
