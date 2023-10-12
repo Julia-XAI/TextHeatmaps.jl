@@ -1,12 +1,16 @@
 # TextHeatmaps.jl
+## Version `v1.1.0`
+* ![Feature][badge-feature] Access color schemes through their symbols ([#3][pr-3])
+
 ## Version `v1.0.1`
-- ![Enhancement][badge-enhancement] Restrict argument types of `heatmap` function ([e5eaa83][commit-e5eaa83])
+* ![Enhancement][badge-enhancement] Restrict argument types of `heatmap` function ([e5eaa83][commit-e5eaa83])
 
 ## Version `v1.0.0`
-- Initial release
+* Initial release
 
+[pr-3]: https://github.com/Julia-XAI/TextHeatmaps.jl/pull/3
 
-[commit-e5eaa83]: https://github.com/Julia-XAI/TextHeatmaps.jl/commit/e5eaa83ef7340dc9a5d4d2d0ab0c14d687151588
+[commit-e5eaa83]: https://github.com/Julia-XAI/TextHeatmaps.jl/commit/e5eaa83
 
 [badge-breaking]: https://img.shields.io/badge/BREAKING-red.svg
 [badge-deprecation]: https://img.shields.io/badge/deprecation-orange.svg
