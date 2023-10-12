@@ -39,6 +39,13 @@ using Aqua
         h = heatmap(val, words; colorscheme=colorscheme, rangescale=:extrema)
         @test_reference "references/inferno_extrema.txt" repr("text/plain", h)
 
+        # Test colorscheme symbols
+        colorscheme = :inferno
+        h = heatmap(val, words; colorscheme=colorscheme, rangescale=:centered)
+        @test_reference "references/inferno_centered.txt" repr("text/plain", h)
+        h = heatmap(val, words; colorscheme=colorscheme, rangescale=:extrema)
+        @test_reference "references/inferno_extrema.txt" repr("text/plain", h)
+
         # Test errors
         @test_throws ArgumentError heatmap(val, ["Test", "Text", "Heatmaps"])
         # Test inner constructor
