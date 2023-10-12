@@ -39,6 +39,12 @@ The color scheme of the `heatmap` is customizable:
 
 For more information, refer to the [package documentation](https://Julia-XAI.github.io/TextHeatmaps.jl/stable/).
 
+## Related packages
+* [VisionHeatmaps.jl](https://github.com/Julia-XAI/VisionHeatmaps.jl):
+  Sibling package for visualization of input space attributions for vision models.
+* [ExplainableAI.jl](https://github.com/Julia-XAI/ExplainableAI.jl): 
+  TextHeatmaps.jl was designed as a dependency for visualization of attributions from ExplainableAI.jl.
+
 [heatmap-repl]: https://raw.githubusercontent.com/Julia-XAI/TextHeatmaps.jl/gh-pages/assets/heatmap_repl.png
 [heatmap-pluto]: https://raw.githubusercontent.com/Julia-XAI/TextHeatmaps.jl/gh-pages/assets/heatmap_pluto.png
 [heatmap-settings]: https://raw.githubusercontent.com/Julia-XAI/TextHeatmaps.jl/gh-pages/assets/heatmap_settings.png
