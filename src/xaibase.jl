@@ -1,5 +1,3 @@
-module TextHeatmapsXAIBaseExt
-
 using TextHeatmaps, XAIBase
 
 struct HeatmapConfig
@@ -8,9 +6,6 @@ struct HeatmapConfig
     rangescale::Symbol
 end
 
-const DEFAULT_COLORSCHEME = :seismic
-const DEFAULT_REDUCE = :sum
-const DEFAULT_RANGESCALE = :centered
 const DEFAULT_HEATMAP_PRESET = HeatmapConfig(
     DEFAULT_COLORSCHEME, DEFAULT_REDUCE, DEFAULT_RANGESCALE
 )
@@ -37,17 +32,13 @@ function get_heatmapping_config(expl::Explanation; kwargs...)
 end
 
 """
-    heatmap(explanation, text)
+    heatmap(expl::Explanation, text)
 
-Visualize [`Explanation`](@ref) from XAIBase as text heatmap.
+Visualize `Explanation` from XAIBase as text heatmap.
 Text should be a vector containing vectors of strings, one for each input in the batched explanation.
 
-## Keyword arguments
-- `colorscheme::Union{ColorScheme,Symbol}`: color scheme from ColorSchemes.jl.
-  Defaults to `:$DEFAULT_COLORSCHEME`.
-- `rangescale::Symbol`: selects how the color channel reduced heatmap is normalized
-  before the color scheme is applied. Can be either `:extrema` or `:centered`.
-  Defaults to `:$DEFAULT_RANGESCALE` for use with the default color scheme `:$DEFAULT_COLORSCHEME`.
+This will use the default heatmapping style for the given type of explanation.
+Defaults can be overridden via keyword arguments.
 """
 function TextHeatmaps.heatmap(
     expl::Explanation, texts::AbstractVector{<:AbstractVector{<:AbstractString}}; kwargs...
@@ -75,5 +66,3 @@ function TextHeatmaps.heatmap(
 )
     return heatmap(expl, [text]; kwargs...)
 end
-
-end # module
