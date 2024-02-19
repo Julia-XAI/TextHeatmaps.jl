@@ -1,8 +1,9 @@
-const DEFAULT_COLORSCHEME = seismic
+const DEFAULT_COLORSCHEME = :seismic
 const DEFAULT_RANGESCALE = :centered
+const DEFAULT_REDUCE = :sum
 
 """
-    heatmap(values, words)
+    heatmap(values::AbstractArray, words)
 
 Create a heatmap of words where the background color of each word is determined by its corresponding value.
 Arguments `values` and `words` (and optionally `colors`) must have the same size.
