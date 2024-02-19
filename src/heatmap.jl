@@ -39,7 +39,10 @@ struct TextHeatmap{
 end
 
 function TextHeatmap(
-    val, words; colorscheme::Union{ColorScheme,Symbol}=DEFAULT_COLORSCHEME, rangescale=DEFAULT_RANGESCALE
+    val,
+    words;
+    colorscheme::Union{ColorScheme,Symbol}=DEFAULT_COLORSCHEME,
+    rangescale=DEFAULT_RANGESCALE,
 )
     if size(val) != size(words)
         throw(ArgumentError("Sizes of values and words don't match"))
