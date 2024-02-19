@@ -1,4 +1,7 @@
 # TextHeatmaps.jl
+## Version `v1.2.0`
+* ![Feature][badge-feature] Add XAIBase package extension ([#4][pr-4])
+
 ## Version `v1.1.0`
 * ![Feature][badge-feature] Access color schemes through their symbols ([#3][pr-3])
 
@@ -8,6 +11,7 @@
 ## Version `v1.0.0`
 * Initial release
 
+[pr-4]: https://github.com/Julia-XAI/TextHeatmaps.jl/pull/4
 [pr-3]: https://github.com/Julia-XAI/TextHeatmaps.jl/pull/3
 
 [commit-e5eaa83]: https://github.com/Julia-XAI/TextHeatmaps.jl/commit/e5eaa83
