@@ -96,7 +96,7 @@ function Base.show(io::IO, ::MIME"text/html", h::TextHeatmap)
         colors = "background-color: #$bg; color: $fg;"
         # adjust background layout to extend color between words
         padding = "padding: 0.1em 0.2em 0.1em 0.2em;"
-		margin = "margin: 0.0em -0.1em 0.0em 0.1em;"
+	margin = "margin: 0.0em -0.1em 0.0em 0.1em;"
         print(io, """<heatmap-word style="$colors $padding $margin">$word </heatmap-word>""")
     end
     print(io, "</heatmap></p>")
