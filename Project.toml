@@ -1,7 +1,7 @@
 name = "TextHeatmaps"
 uuid = "2dd6718a-6083-4824-b9f7-90e4a57f72d2"
 authors = ["Adrian Hill <gh@adrianhill.de>"]
-version = "1.2.3-DEV"
+version = "1.3.0"
 
 [deps]
 ColorSchemes = "35d6a980-a343-548e-a6ea-1d62b119f2f4"

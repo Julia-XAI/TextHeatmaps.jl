@@ -1,9 +1,16 @@
 # TextHeatmaps.jl
+
+## Version `v1.3.0`
+* ![Enhancement][badge-enhancement] Add line wrapping in HTML output ([#9])
+
+## Version `v1.2.2`
+* ![Maintenance][badge-maintenance] Update dependencies
+
 ## Version `v1.2.1`
-* ![Feature][badge-feature] Add XAIBase dependency ([#4][pr-4], [#5][pr-5])
+* ![Feature][badge-feature] Add XAIBase dependency ([#4], [#5])
 
 ## Version `v1.1.0`
-* ![Feature][badge-feature] Access color schemes through their symbols ([#3][pr-3])
+* ![Feature][badge-feature] Access color schemes through their symbols ([#3])
 
 ## Version `v1.0.1`
 * ![Enhancement][badge-enhancement] Restrict argument types of `heatmap` function ([e5eaa83][commit-e5eaa83])
@@ -11,11 +18,24 @@
 ## Version `v1.0.0`
 * Initial release
 
-[pr-5]: https://github.com/Julia-XAI/TextHeatmaps.jl/pull/5
-[pr-4]: https://github.com/Julia-XAI/TextHeatmaps.jl/pull/4
-[pr-3]: https://github.com/Julia-XAI/TextHeatmaps.jl/pull/3
+[#9]: https://github.com/Julia-XAI/TextHeatmaps.jl/pull/9
+[#5]: https://github.com/Julia-XAI/TextHeatmaps.jl/pull/5
+[#4]: https://github.com/Julia-XAI/TextHeatmaps.jl/pull/4
+[#3]: https://github.com/Julia-XAI/TextHeatmaps.jl/pull/3
 
 [commit-e5eaa83]: https://github.com/Julia-XAI/TextHeatmaps.jl/commit/e5eaa83
+
+<!--
+# Badges
+![BREAKING][badge-breaking]
+![Deprecation][badge-deprecation]
+![Feature][badge-feature]
+![Enhancement][badge-enhancement]
+![Bugfix][badge-bugfix]
+![Experimental][badge-experimental]
+![Maintenance][badge-maintenance]
+![Documentation][badge-docs]
+-->
 
 [badge-breaking]: https://img.shields.io/badge/BREAKING-red.svg
 [badge-deprecation]: https://img.shields.io/badge/deprecation-orange.svg
