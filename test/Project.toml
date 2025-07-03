@@ -8,3 +8,5 @@ ReferenceTests = "324d217c-45ce-50fc-942e-d289b448e8cf"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 XAIBase = "9b48221d-a747-4c1b-9860-46a1d8ba24a7"
 
+[compat]
+JuliaFormatter = "1"

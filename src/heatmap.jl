@@ -88,16 +88,13 @@ luma(c::RGB) = 0.2126 * c.r + 0.7152 * c.g + 0.0722 * c.b # using BT. 709 coeffi
 # Used e.g. in Pluto notebooks
 function Base.show(io::IO, ::MIME"text/html", h::TextHeatmap)
     # wrap lines and break on whitespace
-    linewrap = "overflow-wrap: break-word; white-space: break;"
-    print(io, """<p><heatmap style="$linewrap">""")
+    div_style = "display: flex; flex-wrap: wrap; gap: 5px 0px; align-items: flex-start;"
+    print(io, """<div id="heatmap" style="$div_style">""")
     for (word, color) in zip(h.words, h.colors)
         bg = hex(color)
         fg = is_background_bright(color) ? "black" : "white"
-        colors = "background-color: #$bg; color: $fg;"
-        # adjust background layout to extend color between words
-        padding = "padding: 0.1em 0.2em 0.1em 0.2em;"
-	margin = "margin: 0.0em -0.1em 0.0em 0.1em;"
-        print(io, """<heatmap-word style="$colors $padding $margin">$word </heatmap-word>""")
+        word_style = "background-color: #$bg; color: $fg; padding: 0.1em 0.3em;"
+        print(io, """<heatmap-word style="$word_style">$word</heatmap-word>""")
     end
-    print(io, "</heatmap></p>")
+    print(io, "</div>")
 end
