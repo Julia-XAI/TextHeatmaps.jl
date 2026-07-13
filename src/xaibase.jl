@@ -40,7 +40,7 @@ Text should be a vector containing vectors of strings, one for each input in the
 This will use the default heatmapping style for the given type of explanation.
 Defaults can be overridden via keyword arguments.
 """
-function TextHeatmaps.heatmap(
+function heatmap(
         expl::Explanation, texts::AbstractVector{<:AbstractVector{<:AbstractString}}; kwargs...
     )
     ndims(expl.val) != 2 && throw(
@@ -56,12 +56,12 @@ function TextHeatmaps.heatmap(
 
     c = get_heatmapping_config(expl; kwargs...)
     return [
-        TextHeatmaps.heatmap(v, t; colorscheme = c.colorscheme, rangescale = c.rangescale) for
+        heatmap(v, t; colorscheme = c.colorscheme, rangescale = c.rangescale) for
             (v, t) in zip(eachcol(expl.val), texts)
     ]
 end
 
-function TextHeatmaps.heatmap(
+function heatmap(
         expl::Explanation, text::AbstractVector{<:AbstractString}; kwargs...
     )
     return heatmap(expl, [text]; kwargs...)
