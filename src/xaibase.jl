@@ -45,7 +45,7 @@ function heatmap(
     )
     ndims(expl.val) != 2 && throw(
         ArgumentError(
-            "To heatmap text, `explanation.val` must be 2D array of shape `(input_length, batchsize)`. Got array of shape $(size(x)) instead.",
+            "To heatmap text, `explanation.val` must be 2D array of shape `(input_length, batchsize)`. Got array of shape $(size(expl.val)) instead.",
         ),
     )
     batchsize = size(expl.val, 2)
