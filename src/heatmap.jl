@@ -16,8 +16,8 @@ Arguments `values` and `words` (and optionally `colors`) must have the same size
   Defaults to `:centered` for use with the default color scheme `seismic`.
 """
 function heatmap(
-    val::AbstractArray{<:Real}, words::AbstractArray{<:AbstractString}; kwargs...
-)
+        val::AbstractArray{<:Real}, words::AbstractArray{<:AbstractString}; kwargs...
+    )
     return TextHeatmap(val, words; kwargs...)
 end
 
@@ -25,8 +25,8 @@ end
 # such that we can show the heatmap both in the terminal and as HTML output in notebooks.
 
 struct TextHeatmap{
-    V<:AbstractArray{<:Real},W<:AbstractArray{<:AbstractString},C<:AbstractArray{<:RGB}
-}
+        V <: AbstractArray{<:Real}, W <: AbstractArray{<:AbstractString}, C <: AbstractArray{<:RGB},
+    }
     val::V
     words::W
     colors::C
@@ -35,16 +35,16 @@ struct TextHeatmap{
             throw(ArgumentError("Sizes of values, words and colors don't match"))
         end
         colors = convert.(RGB, colors)
-        return new{typeof(val),typeof(words),typeof(colors)}(val, words, colors)
+        return new{typeof(val), typeof(words), typeof(colors)}(val, words, colors)
     end
 end
 
 function TextHeatmap(
-    val,
-    words;
-    colorscheme::Union{ColorScheme,Symbol}=DEFAULT_COLORSCHEME,
-    rangescale=DEFAULT_RANGESCALE,
-)
+        val,
+        words;
+        colorscheme::Union{ColorScheme, Symbol} = DEFAULT_COLORSCHEME,
+        rangescale = DEFAULT_RANGESCALE,
+    )
     if size(val) != size(words)
         throw(ArgumentError("Sizes of values and words don't match"))
     end
@@ -65,15 +65,16 @@ Base.show(io::IO, h::TextHeatmap) = print_heatmap(io, h)
 function print_heatmap(io::IO, h::TextHeatmap)
     for (word, color) in zip(h.words, h.colors)
         print(io, set_crayon(color), word)
-        print(io, Crayon(; reset=true), " ")
+        print(io, Crayon(; reset = true), " ")
     end
+    return
 end
 
 set_crayon(c::Colorant) = set_crayon(convert(RGB{N0f8}, c))
 function set_crayon(bg::RGB{N0f8})
     background = get_color_indices(bg)
     foreground = is_background_bright(bg) ? :black : :white
-    return Crayon(; background=background, foreground=foreground)
+    return Crayon(; background = background, foreground = foreground)
 end
 
 get_color_indices(c::RGB{N0f8}) = (c.r.i, c.g.i, c.b.i)
@@ -96,5 +97,5 @@ function Base.show(io::IO, ::MIME"text/html", h::TextHeatmap)
         word_style = "background-color: #$bg; color: $fg; padding: 0.1em 0.3em;"
         print(io, """<heatmap-word style="$word_style">$word</heatmap-word>""")
     end
-    print(io, "</div>")
+    return print(io, "</div>")
 end

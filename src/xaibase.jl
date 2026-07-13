@@ -10,10 +10,10 @@ const DEFAULT_HEATMAP_PRESET = HeatmapConfig(
     DEFAULT_COLORSCHEME, DEFAULT_REDUCE, DEFAULT_RANGESCALE
 )
 
-const HEATMAP_PRESETS = Dict{Symbol,HeatmapConfig}(
+const HEATMAP_PRESETS = Dict{Symbol, HeatmapConfig}(
     :attribution => HeatmapConfig(:seismic, :sum, :centered),
     :sensitivity => HeatmapConfig(:grays, :norm, :extrema),
-    :cam         => HeatmapConfig(:jet, :sum, :extrema),
+    :cam => HeatmapConfig(:jet, :sum, :extrema),
 )
 
 # Select HeatmapConfig preset based on heatmapping style in Explanation
@@ -26,8 +26,8 @@ function get_heatmapping_config(expl::Explanation; kwargs...)
     c = get_heatmapping_config(expl.heatmap)
 
     colorscheme = get(kwargs, :colorscheme, c.colorscheme)
-    rangescale  = get(kwargs, :rangescale, c.rangescale)
-    reduce      = get(kwargs, :reduce, c.reduce)
+    rangescale = get(kwargs, :rangescale, c.rangescale)
+    reduce = get(kwargs, :reduce, c.reduce)
     return HeatmapConfig(colorscheme, reduce, rangescale)
 end
 
@@ -40,12 +40,12 @@ Text should be a vector containing vectors of strings, one for each input in the
 This will use the default heatmapping style for the given type of explanation.
 Defaults can be overridden via keyword arguments.
 """
-function TextHeatmaps.heatmap(
-    expl::Explanation, texts::AbstractVector{<:AbstractVector{<:AbstractString}}; kwargs...
-)
+function heatmap(
+        expl::Explanation, texts::AbstractVector{<:AbstractVector{<:AbstractString}}; kwargs...
+    )
     ndims(expl.val) != 2 && throw(
         ArgumentError(
-            "To heatmap text, `explanation.val` must be 2D array of shape `(input_length, batchsize)`. Got array of shape $(size(x)) instead.",
+            "To heatmap text, `explanation.val` must be 2D array of shape `(input_length, batchsize)`. Got array of shape $(size(expl.val)) instead.",
         ),
     )
     batchsize = size(expl.val, 2)
@@ -56,13 +56,13 @@ function TextHeatmaps.heatmap(
 
     c = get_heatmapping_config(expl; kwargs...)
     return [
-        TextHeatmaps.heatmap(v, t; colorscheme=c.colorscheme, rangescale=c.rangescale) for
-        (v, t) in zip(eachcol(expl.val), texts)
+        heatmap(v, t; colorscheme = c.colorscheme, rangescale = c.rangescale) for
+            (v, t) in zip(eachcol(expl.val), texts)
     ]
 end
 
-function TextHeatmaps.heatmap(
-    expl::Explanation, text::AbstractVector{<:AbstractString}; kwargs...
-)
+function heatmap(
+        expl::Explanation, text::AbstractVector{<:AbstractString}; kwargs...
+    )
     return heatmap(expl, [text]; kwargs...)
 end

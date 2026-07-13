@@ -20,6 +20,6 @@ h = heatmap(expl, text)
 @test_reference "references/LRP1.txt" repr("text/plain", h[1])
 @test_reference "references/LRP2.txt" repr("text/plain", h[2])
 
-h = heatmap(expl, text; rangescale=:extrema)
+h = heatmap(expl, text; rangescale = :extrema)
 @test_reference "references/LRP1_extrema.txt" repr("text/plain", h[1])
 @test_reference "references/LRP2_extrema.txt" repr("text/plain", h[2])

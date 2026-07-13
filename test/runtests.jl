@@ -5,17 +5,11 @@ using FixedPointNumbers
 
 using Test
 using ReferenceTests
-using Aqua
-using JuliaFormatter
 
 @testset "TextHeatmaps.jl" begin
-    @testset "Aqua.jl" begin
-        @info "Running Aqua.jl's auto quality assurance tests. These might print warnings from dependencies."
-        Aqua.test_all(TextHeatmaps)
-    end
-    @testset "JuliaFormatter.jl" begin
-        @info "Running JuliaFormatter's code formatting tests."
-        @test format(TextHeatmaps; verbose=false, overwrite=false)
+    @testset verbose = true "Linting" begin
+        @info "Running linting tests..."
+        include("linting.jl")
     end
     @testset "Heatmap" begin
         @info "Testing heatmaps..."
