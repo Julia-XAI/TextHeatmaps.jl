@@ -1,7 +1,7 @@
 words = ["Test", "TextHeatmaps"]
 val = [4.2, -1.0]
 
-colorscheme = TextHeatmaps.seismic
+colorscheme = ColorSchemes.seismic
 cmin = get(colorscheme, 0) # red
 cmax = get(colorscheme, 1) # blue
 
