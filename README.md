@@ -47,6 +47,10 @@ For more information, refer to the [package documentation](https://Julia-XAI.git
 * [ExplainableAI.jl](https://github.com/Julia-XAI/ExplainableAI.jl):
   TextHeatmaps.jl was designed as a dependency for visualization of attributions from ExplainableAI.jl.
 
+## Acknowledgements
+
+Adrian Hill gratefully acknowledges funding from the German Federal Ministry of Education and Research under the grant BIFOLD26B.
+
 [heatmap-repl]: https://raw.githubusercontent.com/Julia-XAI/TextHeatmaps.jl/gh-pages/assets/heatmap_repl.png
 [heatmap-pluto]: https://raw.githubusercontent.com/Julia-XAI/TextHeatmaps.jl/gh-pages/assets/heatmap_pluto.png
 [heatmap-settings]: https://raw.githubusercontent.com/Julia-XAI/TextHeatmaps.jl/gh-pages/assets/heatmap_settings.png
