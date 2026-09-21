@@ -40,7 +40,17 @@ and re-exported by TextHeatmaps:
 ```@docs
 Pipeline
 AbstractTransform
-TextHeatmaps.apply
+```
+
+Transforms and pipelines are applied using:
+```@meta
+CurrentModule = TextHeatmaps
+```
+```@docs
+apply
+```
+```@meta
+CurrentModule = XAIBase
 ```
 
 ### [Attribution pooling](@id api-pooling)

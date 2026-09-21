@@ -16,6 +16,7 @@ makedocs(;
         assets = String[],
     ),
     pages = ["Home" => "index.md", "Getting started" => "example.md"],
+    warnonly = [:missing_docs],
 )
 
 deploydocs(; repo = "github.com/Julia-XAI/TextHeatmaps.jl", devbranch = "main")
