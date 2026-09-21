@@ -58,6 +58,7 @@ jobs:
           julia --project=docs -e '
             using Documenter: DocMeta, doctest
             using TextHeatmaps
+            using XAIBase # doc pages set CurrentModule = XAIBase for re-exported docstrings
             DocMeta.setdocmeta!(TextHeatmaps, :DocTestSetup, :(using TextHeatmaps); recursive=true)
             doctest(TextHeatmaps)'
 
