@@ -2,6 +2,7 @@
 ColorSchemes = "35d6a980-a343-548e-a6ea-1d62b119f2f4"
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
 TextHeatmaps = "2dd6718a-6083-4824-b9f7-90e4a57f72d2"
+XAIBase = "9b48221d-a747-4c1b-9860-46a1d8ba24a7"
 
 [compat]
 ColorSchemes = "3"

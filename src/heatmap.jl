@@ -1,101 +1,85 @@
-const DEFAULT_COLORSCHEME = :seismic
-const DEFAULT_RANGESCALE = :centered
-const DEFAULT_REDUCE = :sum
+const Words = AbstractVector{<:AbstractString}
+const Texts = AbstractVector{<:AbstractVector{<:AbstractString}}
+
+const InputDimensionError = ArgumentError(
+    "heatmapping assumes the convention (features, input length, batch dimension) for input array dimensions, where the feature dimension is optional.
+    Please reshape your input to match this format if your model doesn't adhere to this convention.",
+)
 
 """
-    heatmap(values::AbstractArray, words)
+    heatmap(x::AbstractArray, words)
+    heatmap(x::AbstractArray, words, pipeline)
 
-Create a heatmap of words where the background color of each word is determined by its corresponding value.
-Arguments `values` and `words` (and optionally `colors`) must have the same size.
+Visualize an array as a heatmap of words,
+where the background color of each word is determined by its corresponding value.
 
-## Keyword arguments
-- `colorscheme::Union{ColorScheme,Symbol}`: color scheme from ColorSchemes.jl.
-  Defaults to `ColorSchemes.seismic`.
-- `rangescale::Symbol`: selects how the color channel reduced heatmap is normalized
-  before the color scheme is applied. Can be either `:extrema` or `:centered`.
-  Defaults to `:centered` for use with the default color scheme `seismic`.
+If `words` is a vector of strings, `x` is a single sample
+of size `(input_length,)` or `(features, input_length)` and a single heatmap is returned.
+If `words` is a vector containing vectors of strings, one for each sample, `x` is a batch
+of size `(input_length, batchsize)` or `(features, input_length, batchsize)`
+and a vector of heatmaps is returned.
+
+Unless a `pipeline` is passed, `x` is assumed to contain a single signed value for each word,
+which is visualized using `CenteredNormalization` and the diverging `:berlin`.
+"""
+function heatmap(x::AbstractArray{<:Real}, words::Words, pipe::AbstractTransform)
+    ndims(x) in (1, 2) || throw(InputDimensionError)
+    return TextHeatmap(words, apply(pipe, x))
+end
+function heatmap(x::AbstractArray{<:Real}, texts::Texts, pipe::AbstractTransform)
+    ndims(x) in (2, 3) || throw(InputDimensionError)
+    xs = Batch(x)
+    batchsize = length(eachsample(xs))
+    batchsize != length(texts) && throw(
+        ArgumentError("Batchsize $batchsize doesn't match number of texts $(length(texts))."),
+    )
+    return unwrap(apply(pipe, xs), texts)
+end
+function heatmap(x::AbstractArray{<:Real}, text::Union{Words, Texts})
+    return heatmap(x, text, DEFAULT_PIPELINE)
+end
+
+# Return heatmaps as a vector of text heatmaps
+function unwrap(colors::Batch, texts::Texts)
+    return [TextHeatmap(words, copy(c)) for (words, c) in zip(texts, eachsample(colors))]
+end
+
+##================#
+# XAIBase support #
+##================#
+
+"""
+    heatmap(attr::Attribution, text)
+    heatmap(attr::Attribution, text, pipeline)
+
+Visualize `Attribution` from XAIBase as text heatmaps.
+Assumes the convention `(input_length, batchsize)` or `(features, input_length, batchsize)` for `attr.val`.
+`text` should be a vector containing vectors of strings, one for each sample in the batch.
+For a batch containing a single sample, `text` can also be a vector of strings.
+
+Unless a `pipeline` is passed, this will use the default heatmapping pipeline
+for the attribution pooling function `attr.pooling`, see [`default_pipeline`](@ref).
+"""
+heatmap(attr::Attribution, texts::Texts, pipe::AbstractTransform) = heatmap(attr.val, texts, pipe)
+heatmap(attr::Attribution, words::Words, pipe::AbstractTransform) = heatmap(attr, [words], pipe)
+function heatmap(attr::Attribution, text::Union{Words, Texts})
+    return heatmap(attr, text, default_pipeline(attr))
+end
+
+"""
+    heatmap(input, analyzer::AbstractXAIMethod, text)
+
+Compute an `Attribution` for a given `input` using the XAI method `analyzer` and visualize it
+as text heatmaps.
+This will use the default heatmapping pipeline for the attribution pooling function `attr.pooling`.
 """
 function heatmap(
-        val::AbstractArray{<:Real}, words::AbstractArray{<:AbstractString}; kwargs...
+        input,
+        analyzer::AbstractXAIMethod,
+        text::Union{Words, Texts},
+        analyze_args...;
+        analyze_kwargs...,
     )
-    return TextHeatmap(val, words; kwargs...)
-end
-
-# Defining a `TextHeatmap` struct allows us to dispatch `Base.show` based on MIME types,
-# such that we can show the heatmap both in the terminal and as HTML output in notebooks.
-
-struct TextHeatmap{
-        V <: AbstractArray{<:Real}, W <: AbstractArray{<:AbstractString}, C <: AbstractArray{<:RGB},
-    }
-    val::V
-    words::W
-    colors::C
-    function TextHeatmap(val, words, colors)
-        if size(words) != size(val) || size(words) != size(colors)
-            throw(ArgumentError("Sizes of values, words and colors don't match"))
-        end
-        colors = convert.(RGB, colors)
-        return new{typeof(val), typeof(words), typeof(colors)}(val, words, colors)
-    end
-end
-
-function TextHeatmap(
-        val,
-        words;
-        colorscheme::Union{ColorScheme, Symbol} = DEFAULT_COLORSCHEME,
-        rangescale = DEFAULT_RANGESCALE,
-    )
-    if size(val) != size(words)
-        throw(ArgumentError("Sizes of values and words don't match"))
-    end
-    colorscheme = get_colorscheme(colorscheme)
-    colors = get(colorscheme, val, rangescale)
-    return TextHeatmap(val, words, colors)
-end
-
-get_colorscheme(c::ColorScheme) = c
-get_colorscheme(s::Symbol)::ColorScheme = colorschemes[s]
-
-#==================#
-# Show in terminal #
-#==================#
-
-Base.show(io::IO, h::TextHeatmap) = print_heatmap(io, h)
-
-function print_heatmap(io::IO, h::TextHeatmap)
-    for (word, color) in zip(h.words, h.colors)
-        print(io, set_crayon(color), word)
-        print(io, Crayon(; reset = true), " ")
-    end
-    return
-end
-
-set_crayon(c::Colorant) = set_crayon(convert(RGB{N0f8}, c))
-function set_crayon(bg::RGB{N0f8})
-    background = get_color_indices(bg)
-    foreground = is_background_bright(bg) ? :black : :white
-    return Crayon(; background = background, foreground = foreground)
-end
-
-get_color_indices(c::RGB{N0f8}) = (c.r.i, c.g.i, c.b.i)
-
-is_background_bright(bg::RGB) = luma(bg) > 0.5
-luma(c::RGB) = 0.2126 * c.r + 0.7152 * c.g + 0.0722 * c.b # using BT. 709 coefficients
-
-#==================#
-# Show HTML output #
-#==================#
-
-# Used e.g. in Pluto notebooks
-function Base.show(io::IO, ::MIME"text/html", h::TextHeatmap)
-    # wrap lines and break on whitespace
-    div_style = "display: flex; flex-wrap: wrap; gap: 5px 0px; align-items: flex-start;"
-    print(io, """<div id="heatmap" style="$div_style">""")
-    for (word, color) in zip(h.words, h.colors)
-        bg = hex(color)
-        fg = is_background_bright(color) ? "black" : "white"
-        word_style = "background-color: #$bg; color: $fg; padding: 0.1em 0.3em;"
-        print(io, """<heatmap-word style="$word_style">$word</heatmap-word>""")
-    end
-    return print(io, "</div>")
+    attr = analyze(input, analyzer, analyze_args...; analyze_kwargs...)
+    return heatmap(attr, text)
 end

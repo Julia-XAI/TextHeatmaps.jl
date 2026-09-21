@@ -1,10 +1,11 @@
 using TextHeatmaps
+using XAIBase # API reference includes re-exported XAIBase docstrings
 using Documenter
 
 DocMeta.setdocmeta!(TextHeatmaps, :DocTestSetup, :(using TextHeatmaps); recursive = true)
 
 makedocs(;
-    modules = [TextHeatmaps],
+    modules = [TextHeatmaps, XAIBase],
     authors = "Adrian Hill <gh@adrianhill.de>",
     repo = "https://github.com/Julia-XAI/TextHeatmaps.jl/blob/{commit}{path}#{line}",
     sitename = "TextHeatmaps.jl",

@@ -1,5 +1,29 @@
 # TextHeatmaps.jl
 
+## Version `v2.0.0`
+* ![BREAKING][badge-breaking] Support XAIBase v5, requiring XAIBase `v5.2`:
+  * heatmap `Attribution`s instead of `Explanation`s
+  * default pipelines are chosen by the attribution pooling function `attr.pooling`
+    and can be inspected using `TextHeatmaps.default_pipeline(attr)`:
+    unsigned poolings use `ExtremaNormalization` and `:batlow`,
+    signed poolings use `CenteredNormalization` and `:berlin`
+  * remove the `:attribution`, `:sensitivity` and `:cam` presets
+* ![BREAKING][badge-breaking] Heatmaps are customized using pipelines of transforms, mirroring VisionHeatmaps.jl:
+  * `heatmap(x, words, pipeline)` replaces the keyword arguments `colorscheme` and `rangescale`, e.g.
+    `heatmap(x, words, ExtremaNormalization() |> Colormap(:inferno))`
+  * `ExtremaNormalization()` and `CenteredNormalization()` replace the rangescales `:extrema` and `:centered`
+  * `Colormap(name)` applies colormaps from ColorSchemes.jl
+  * `AbstractTransform`, `Pipeline`, attribution pooling and normalization functions are re-exported from XAIBase
+  * remove the keyword argument `reduce`, which had no effect
+* ![BREAKING][badge-breaking] `heatmap` requires vectors of words.
+  The internal `TextHeatmap` no longer stores values
+* ![Feature][badge-feature] Pool attributions with a feature dimension,
+  following the convention `(features, input_length, batchsize)`.
+  Pooling functions like `NormPooling()` and `SumPooling()` are used as pipeline steps
+* ![Feature][badge-feature] Heatmap batches of arrays by passing a vector containing vectors of words.
+  `BatchedNormalization(normalization)` normalizes all heatmaps in a batch to a shared value range
+* ![Feature][badge-feature] Add `heatmap(input, analyzer, text)`, which computes and heatmaps an `Attribution`
+
 ## Version `v1.3.0`
 * ![Enhancement][badge-enhancement] Add line wrapping in HTML output ([#9])
 

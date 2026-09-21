@@ -35,7 +35,7 @@ This not only works in the REPL, but also as HTML output in notebooks and on web
 
 ![Heatmap in Pluto][heatmap-pluto]
 
-The color scheme of the `heatmap` is customizable:
+The colormap of the `heatmap` is customizable:
 
 ![Heatmap in Documenter][heatmap-settings]
 
