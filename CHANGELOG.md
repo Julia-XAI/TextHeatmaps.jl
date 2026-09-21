@@ -23,6 +23,8 @@
 * ![Feature][badge-feature] Heatmap batches of arrays by passing a vector containing vectors of words.
   `BatchedNormalization(normalization)` normalizes all heatmaps in a batch to a shared value range
 * ![Feature][badge-feature] Add `heatmap(input, analyzer, text)`, which computes and heatmaps an `Attribution`
+* ![Feature][badge-feature] Warn when a pipeline pairs `ExtremaNormalization` with a diverging colormap
+  or `CenteredNormalization` with a sequential colormap
 
 ## Version `v1.3.0`
 * ![Enhancement][badge-enhancement] Add line wrapping in HTML output ([#9])

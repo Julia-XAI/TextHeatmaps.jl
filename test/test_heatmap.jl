@@ -52,6 +52,27 @@ end
     @test repr(Colormap(:inferno)) == "Colormap(:inferno)"
 end
 
+@testset "Colormap and normalization pairing" begin
+    default_colormap = TextHeatmaps.default_colormap
+    @test default_colormap(ExtremaNormalization()) == Colormap(:batlow)
+    @test default_colormap(CenteredNormalization()) == Colormap(:berlin)
+    @test default_colormap(BatchedNormalization(CenteredNormalization())) ==
+        Colormap(:berlin)
+
+    # Matching and unknown kinds of colormaps don't warn
+    @test_logs ExtremaNormalization() |> Colormap(:batlow)
+    @test_logs CenteredNormalization() |> Colormap(:berlin)
+    @test_logs ExtremaNormalization() |> Colormap(:jet)
+    @test_logs NormPooling() |> Colormap(:berlin)
+
+    # Mismatched kinds of colormaps warn
+    @test_logs (:warn, r"diverging colormap") CenteredNormalization() |> Colormap()
+    @test_logs (:warn, r"sequential colormap") ExtremaNormalization() |> Colormap(:berlin)
+    @test_logs (:warn, r"diverging colormap") SumPooling() |>
+        BatchedNormalization(CenteredNormalization()) |>
+        Colormap(:viridis)
+end
+
 @testset "Attribution pooling" begin
     # Features are the first dimension and are pooled: the columns of `x` sum up to `val`
     x = [4.0 1.0; 0.2 -2.0]

@@ -116,6 +116,8 @@ heatmap(val, words, pipe)
 
 We strongly suggest to only use sequential colormaps with `ExtremaNormalization`
 and diverging colormaps with `CenteredNormalization`.
+As seen above, TextHeatmaps warns when a pipeline pairs a normalization
+with a colormap that ColorSchemes.jl describes as the other kind.
 
 ### Colormaps
 The [`Colormap`](@ref) transform applies colormaps from
