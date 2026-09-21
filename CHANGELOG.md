@@ -25,6 +25,8 @@
 * ![Feature][badge-feature] Add `heatmap(input, analyzer, text)`, which computes and heatmaps an `Attribution`
 * ![Feature][badge-feature] Warn when a pipeline pairs `ExtremaNormalization` with a diverging colormap
   or `CenteredNormalization` with a sequential colormap
+* ![Maintenance][badge-maintenance] Render terminal output with StyledStrings instead of Crayons,
+  which requires Julia `v1.11` ([#6])
 
 ## Version `v1.3.0`
 * ![Enhancement][badge-enhancement] Add line wrapping in HTML output ([#9])
@@ -45,6 +47,7 @@
 * Initial release
 
 [#9]: https://github.com/Julia-XAI/TextHeatmaps.jl/pull/9
+[#6]: https://github.com/Julia-XAI/TextHeatmaps.jl/issues/6
 [#5]: https://github.com/Julia-XAI/TextHeatmaps.jl/pull/5
 [#4]: https://github.com/Julia-XAI/TextHeatmaps.jl/pull/4
 [#3]: https://github.com/Julia-XAI/TextHeatmaps.jl/pull/3

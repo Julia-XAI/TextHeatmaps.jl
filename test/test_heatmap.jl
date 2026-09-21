@@ -5,6 +5,11 @@ using ColorSchemes
 using Test
 using ReferenceTests
 
+# StyledStrings only emits ANSI escapes for color-capable streams,
+# so render the terminal output with a color context.
+isdefined(@__MODULE__, :textplain) ||
+    (textplain(h) = repr("text/plain", h; context = (:color => true)))
+
 words = ["Test", "TextHeatmaps"]
 val = [4.2, -1.0]
 
@@ -15,7 +20,7 @@ cmax = get(seismic, 1) # red
 @testset "Default pipeline" begin
     h = heatmap(val, words)
     @test h.colors[1] ≈ get(ColorSchemes.berlin, 1)
-    @test_reference "references/berlin_centered.txt" repr("text/plain", h)
+    @test_reference "references/berlin_centered.txt" textplain(h)
     @test_reference "references/berlin_centered_html.txt" repr("text/html", h)
 
     # Scalar values need no pooling, so the default pipeline drops the identity pooling
@@ -32,26 +37,26 @@ end
     h = heatmap(val, words, CenteredNormalization() |> Colormap(:seismic))
     @test h.colors[1] ≈ cmax
     @test h.colors[2] != cmin
-    @test_reference "references/seismic_centered.txt" repr("text/plain", h)
+    @test_reference "references/seismic_centered.txt" textplain(h)
     @test_reference "references/seismic_centered_html.txt" repr("text/html", h)
 
     h = heatmap(val, words, ExtremaNormalization() |> Colormap(:seismic))
     @test h.colors[1] ≈ cmax
     @test h.colors[2] ≈ cmin
-    @test_reference "references/seismic_extrema.txt" repr("text/plain", h)
+    @test_reference "references/seismic_extrema.txt" textplain(h)
 end
 
 @testset "Colormaps" begin
     h = heatmap(val, words, CenteredNormalization() |> Colormap(:inferno))
-    @test_reference "references/inferno_centered.txt" repr("text/plain", h)
+    @test_reference "references/inferno_centered.txt" textplain(h)
     h = heatmap(val, words, ExtremaNormalization() |> Colormap(:inferno))
-    @test_reference "references/inferno_extrema.txt" repr("text/plain", h)
+    @test_reference "references/inferno_extrema.txt" textplain(h)
 
     # Custom colormaps
     h = heatmap(
         val, words, ExtremaNormalization() |> Colormap(:custom, ColorSchemes.inferno)
     )
-    @test_reference "references/inferno_extrema.txt" repr("text/plain", h)
+    @test_reference "references/inferno_extrema.txt" textplain(h)
 
     @test Colormap() == Colormap(:batlow)
     @test repr(Colormap(:inferno)) == "Colormap(:inferno)"
@@ -83,11 +88,11 @@ end
     x = [4.0 1.0; 0.2 -2.0]
     pipe = SumPooling() |> CenteredNormalization() |> Colormap(:seismic)
     h = heatmap(x, words, pipe)
-    @test_reference "references/seismic_centered.txt" repr("text/plain", h)
+    @test_reference "references/seismic_centered.txt" textplain(h)
 
     # Arrays without a feature dimension are pooled as if they had a single feature
     h = heatmap(val, words, pipe)
-    @test_reference "references/seismic_centered.txt" repr("text/plain", h)
+    @test_reference "references/seismic_centered.txt" textplain(h)
     h1 = heatmap(val, words, NormPooling() |> ExtremaNormalization() |> Colormap(:seismic))
     h2 = heatmap(abs.(val), words, ExtremaNormalization() |> Colormap(:seismic))
     @test h1.colors == h2.colors
@@ -101,12 +106,12 @@ end
     vals = [4.2 -0.5; -1.0 2.1]
     hs = heatmap(vals, texts)
     @test length(hs) == 2
-    @test_reference "references/berlin_centered.txt" repr("text/plain", hs[1])
+    @test_reference "references/berlin_centered.txt" textplain(hs[1])
 
     # By default, samples are normalized individually
     pipe = CenteredNormalization() |> Colormap(:seismic)
     hs = heatmap(vals, texts, pipe)
-    @test_reference "references/seismic_centered.txt" repr("text/plain", hs[1])
+    @test_reference "references/seismic_centered.txt" textplain(hs[1])
     @test hs[2].colors == heatmap(vals[:, 2], texts[2], pipe).colors
     @test hs[2].colors[2] ≈ cmax
 
