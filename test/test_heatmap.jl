@@ -18,9 +18,14 @@ cmax = get(seismic, 1) # red
     @test_reference "references/berlin_centered.txt" repr("text/plain", h)
     @test_reference "references/berlin_centered_html.txt" repr("text/html", h)
 
-    pipe = SignedNoPooling() |> CenteredNormalization() |> Colormap(:berlin)
-    @test heatmap(val, words, pipe).colors == h.colors
+    # Scalar values need no pooling, so the default pipeline drops the identity pooling
+    pipe = CenteredNormalization() |> Colormap(:berlin)
     @test repr(TextHeatmaps.DEFAULT_PIPELINE) == repr(pipe)
+    @test heatmap(val, words, pipe).colors == h.colors
+
+    # An explicit identity pooling is a no-op on scalar values
+    pooled = SignedNoPooling() |> CenteredNormalization() |> Colormap(:berlin)
+    @test heatmap(val, words, pooled).colors == h.colors
 end
 
 @testset "Normalization" begin
@@ -87,7 +92,7 @@ end
     h2 = heatmap(abs.(val), words, ExtremaNormalization() |> Colormap(:seismic))
     @test h1.colors == h2.colors
 
-    # Identity poolings can't reduce multiple features
+    # The default pipeline has no pooling and rejects a feature dimension
     @test_throws ArgumentError heatmap(x, words)
 end
 

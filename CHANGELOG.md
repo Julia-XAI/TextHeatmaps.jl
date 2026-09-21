@@ -9,18 +9,18 @@
     signed poolings use `CenteredNormalization` and `:berlin`
   * remove the `:attribution`, `:sensitivity` and `:cam` presets
 * ![BREAKING][badge-breaking] Heatmaps are customized using pipelines of transforms, mirroring VisionHeatmaps.jl:
-  * `heatmap(x, words, pipeline)` replaces the keyword arguments `colorscheme` and `rangescale`, e.g.
-    `heatmap(x, words, ExtremaNormalization() |> Colormap(:inferno))`
+  * `heatmap(x, tokens, pipeline)` replaces the keyword arguments `colorscheme` and `rangescale`, e.g.
+    `heatmap(x, tokens, ExtremaNormalization() |> Colormap(:inferno))`
   * `ExtremaNormalization()` and `CenteredNormalization()` replace the rangescales `:extrema` and `:centered`
   * `Colormap(name)` applies colormaps from ColorSchemes.jl
   * `AbstractTransform`, `Pipeline`, attribution pooling and normalization functions are re-exported from XAIBase
   * remove the keyword argument `reduce`, which had no effect
-* ![BREAKING][badge-breaking] `heatmap` requires vectors of words.
+* ![BREAKING][badge-breaking] `heatmap` requires vectors of tokens.
   The internal `TextHeatmap` no longer stores values
 * ![Feature][badge-feature] Pool attributions with a feature dimension,
   following the convention `(features, input_length, batchsize)`.
   Pooling functions like `NormPooling()` and `SumPooling()` are used as pipeline steps
-* ![Feature][badge-feature] Heatmap batches of arrays by passing a vector containing vectors of words.
+* ![Feature][badge-feature] Heatmap batches of arrays by passing a vector containing vectors of tokens.
   `BatchedNormalization(normalization)` normalizes all heatmaps in a batch to a shared value range
 * ![Feature][badge-feature] Add `heatmap(input, analyzer, text)`, which computes and heatmaps an `Attribution`
 * ![Feature][badge-feature] Warn when a pipeline pairs `ExtremaNormalization` with a diverging colormap

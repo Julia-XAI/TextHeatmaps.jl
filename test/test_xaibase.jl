@@ -17,6 +17,12 @@ output_selection = [CartesianIndex(1, 2), CartesianIndex(3, 4)] # irrelevant
 
     attr = Attribution(val, input, output, output_selection, SumPooling())
     @test repr(TextHeatmaps.default_pipeline(attr)) == repr(pipe)
+
+    # Identity poolings are no-ops on text attributions and are dropped from the pipeline
+    pipe = TextHeatmaps.default_pipeline(SignedNoPooling())
+    @test repr(pipe) == repr(CenteredNormalization() |> Colormap(:berlin))
+    pipe = TextHeatmaps.default_pipeline(UnsignedNoPooling())
+    @test repr(pipe) == repr(ExtremaNormalization() |> Colormap(:batlow))
 end
 
 @testset "Unsigned pooling" begin

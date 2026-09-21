@@ -2,10 +2,10 @@
 Let's assume you put the following text into a sentiment analysis model:
 ```@example 1;
 text = "I loved the concert but not the opening act"
-words = split(text)
+tokens = split(text)
 ```
 
-The model returns a vector of sentiment scores for each word,
+The model returns a vector of sentiment scores for each token,
 where positive values indicate positive sentiment
 and negative values indicate negative sentiment:
 ```@example 1;
@@ -17,38 +17,41 @@ To visualize the sentiment scores, we can use the `heatmap` function:
 ```@example 1
 using TextHeatmaps
 
-heatmap(val, words)
+heatmap(val, tokens)
 ```
 
 ## Custom heatmapping pipelines
 
 TextHeatmaps internally applies a sequence of transforms in what we call a [`Pipeline`](@ref).
-The default pipeline corresponds to:
+Since `val` contains a single value per token,
+the default pipeline just normalizes the values and applies a colormap:
 ```@example 1
-pipe = SignedNoPooling() |> CenteredNormalization() |> Colormap(:berlin)
+pipe = CenteredNormalization() |> Colormap(:berlin)
 ```
 
 We can apply this pipeline by passing it to `heatmap`:
 
 ```@example 1
-heatmap(val, words, pipe)
+heatmap(val, tokens, pipe)
 ```
 
 In the following subsections, we will explain and modify this pipeline step by step.
+We start with [attribution pooling](@ref docs-heatmap-pooling),
+an optional step that reduces attributions with several values per token to a single value.
 
 ### [Attribution pooling](@id docs-heatmap-pooling)
 
-Attributions often contain several features for each word,
+Attributions often contain several features for each token,
 for example one value for each entry of a word embedding.
 Following the convention *(features, input length, batch dimension)*,
-such an attribution is a matrix with one column for each word:
+such an attribution is a matrix with one column for each token:
 
 ```@example 1
 x = [0.5 * val'; 0.3 * val'; 0.2 * val']
 size(x)
 ```
 
-These features need to be reduced to a single scalar value for each word,
+These features need to be reduced to a single scalar value for each token,
 which is later mapped onto a colormap.
 
 For this purpose, pipelines use the [attribution pooling functions](@ref api-pooling)
@@ -59,19 +62,19 @@ whereas `NormPooling` takes their norm:
 
 ```@example 1
 pipe = SumPooling() |> CenteredNormalization() |> Colormap(:berlin)
-heatmap(x, words, pipe)
+heatmap(x, tokens, pipe)
 ```
 
 ```@example 1
 pipe = NormPooling() |> ExtremaNormalization() |> Colormap(:batlow)
-heatmap(x, words, pipe)
+heatmap(x, tokens, pipe)
 ```
 
 `NormPooling` returns non-negative values, which no longer distinguish positive from negative sentiment.
 Which pooling function is appropriate depends on the method that computed the attribution.
 
-Our vector `val` doesn't contain a feature dimension.
-The default pipeline therefore uses `SignedNoPooling`, which leaves values unchanged.
+Our vector `val` holds a single value per token and therefore needs no pooling,
+which is why the default pipeline above has no pooling step.
 
 ### [Normalization](@id docs-heatmap-normalization)
 
@@ -89,15 +92,15 @@ making `CenteredNormalization` a good choice:
 
 ```@example 1
 pipe = CenteredNormalization() |> Colormap(:berlin)
-heatmap(val, words, pipe)
+heatmap(val, tokens, pipe)
 ```
 
 With a diverging colormap, `ExtremaNormalization` should be avoided:
-Even though the word "concert" has a positive sentiment score of `0.3`,
+Even though the token "concert" has a positive sentiment score of `0.3`,
 it is colored in blue:
 ```@example 1
 pipe = ExtremaNormalization() |> Colormap(:berlin)
-heatmap(val, words, pipe)
+heatmap(val, tokens, pipe)
 ```
 
 However, for the default colormap for unsigned values, the sequential `:batlow`,
@@ -106,12 +109,12 @@ which is not centered around zero,
 
 ```@example 1
 pipe = CenteredNormalization() |> Colormap(:batlow)
-heatmap(val, words, pipe)
+heatmap(val, tokens, pipe)
 ```
 
 ```@example 1
 pipe = ExtremaNormalization() |> Colormap(:batlow)
-heatmap(val, words, pipe)
+heatmap(val, tokens, pipe)
 ```
 
 We strongly suggest to only use sequential colormaps with `ExtremaNormalization`
@@ -125,18 +128,18 @@ The [`Colormap`](@ref) transform applies colormaps from
 which can be selected by their name:
 ```@example 1
 pipe = CenteredNormalization() |> Colormap(:seismic)
-heatmap(val, words, pipe)
+heatmap(val, tokens, pipe)
 ```
 
 Custom colormaps can be passed alongside a name:
 ```@example 1
 using ColorSchemes
 pipe = CenteredNormalization() |> Colormap(:reversed_seismic, reverse(ColorSchemes.seismic))
-heatmap(val, words, pipe)
+heatmap(val, tokens, pipe)
 ```
 
 ## Batches
-To heatmap a batch of texts, pass a vector containing vectors of words.
+To heatmap a batch of texts, pass a vector containing vectors of tokens.
 Arrays then contain the batch dimension as their last dimension.
 A vector of heatmaps is returned:
 
@@ -181,5 +184,5 @@ TextHeatmaps.jl also supports rendering heatmaps in the terminal.
 
 Here we use the `print` function to force Documenter.jl to render the heatmap as raw text:
 ```@example 1
-heatmap(val, words) |> print
+heatmap(val, tokens) |> print
 ```

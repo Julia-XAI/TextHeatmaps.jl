@@ -18,10 +18,10 @@ To install this package and its dependencies, open the Julia REPL and run
 ```
 
 ## Example
-Assume you have the following values associated with words in a sentence:
+Assume you have the following values associated with the tokens of a sentence:
 ```julia
 text = "I loved the concert but not the opening act"
-words = split(text)
+tokens = split(text)
 val = [0.1, 2.5, 0.0, 0.3, -0.6, -1.4, 0.0, 0.1, -0.1]
 ```
 
