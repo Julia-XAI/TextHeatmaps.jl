@@ -24,8 +24,9 @@ end
 
 Base.show(io::IO, h::TextHeatmap) = print_heatmap(io, h)
 
-# StyledStrings renders the background color and reset codes, and only emits ANSI
-# escapes when the output stream declares color support (`get(io, :color, false)`).
+# StyledStrings renders the background color and reset codes,
+# and only emits ANSI escapes when the output stream declares color support
+# (`get(io, :color, false)`).
 function print_heatmap(io::IO, h::TextHeatmap)
     for (word, color) in zip(h.words, h.colors)
         print(io, styled"{$(word_face(color)):$word} ")
@@ -35,8 +36,9 @@ end
 
 word_face(c::Colorant) = word_face(convert(RGB{N0f8}, c))
 function word_face(bg::RGB{N0f8})
-    # Use explicit RGB rather than the named `:black`/`:white`, whose shade depends
-    # on the terminal's face theme, so terminal output matches the HTML output.
+    # Use explicit RGB rather than the named `:black`/`:white`,
+    # whose shade depends on the terminal's face theme,
+    # so terminal output matches the HTML output.
     foreground = is_background_bright(bg) ? RGB{N0f8}(0, 0, 0) : RGB{N0f8}(1, 1, 1)
     return Face(; foreground = simplecolor(foreground), background = simplecolor(bg))
 end

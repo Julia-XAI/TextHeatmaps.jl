@@ -5,7 +5,10 @@ using Test
 using ReferenceTests
 
 # StyledStrings only emits ANSI escapes for color-capable streams,
-# so render the terminal output with a color context.
+# and downsamples truecolor to 256 colors on terminals that don't advertise truecolor (e.g. CI).
+# Pin truecolor and render with a color context
+# so the references are deterministic.
+Base.have_truecolor = true
 isdefined(@__MODULE__, :textplain) ||
     (textplain(h) = repr("text/plain", h; context = (:color => true)))
 
