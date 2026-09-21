@@ -2,6 +2,7 @@
 
 [![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://Julia-XAI.github.io/TextHeatmaps.jl/stable/)
 [![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://Julia-XAI.github.io/TextHeatmaps.jl/dev/)
+[![Changelog](https://img.shields.io/badge/news-changelog-yellow.svg)](https://github.com/Julia-XAI/TextHeatmaps.jl/blob/main/CHANGELOG.md)
 [![Build Status](https://github.com/Julia-XAI/TextHeatmaps.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/Julia-XAI/TextHeatmaps.jl/actions/workflows/CI.yml?query=branch%3Amain)
 [![Coverage](https://codecov.io/gh/Julia-XAI/TextHeatmaps.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/Julia-XAI/TextHeatmaps.jl)
 [![Code Style: Runic](https://img.shields.io/badge/code_style-%E1%9A%B1%E1%9A%A2%E1%9A%BE%E1%9B%81%E1%9A%B2-black)](https://github.com/fredrikekre/Runic.jl)
@@ -18,10 +19,10 @@ To install this package and its dependencies, open the Julia REPL and run
 ```
 
 ## Example
-Assume you have the following values associated with words in a sentence:
+Assume you have the following values associated with the tokens of a sentence:
 ```julia
 text = "I loved the concert but not the opening act"
-words = split(text)
+tokens = split(text)
 val = [0.1, 2.5, 0.0, 0.3, -0.6, -1.4, 0.0, 0.1, -0.1]
 ```
 
@@ -35,7 +36,7 @@ This not only works in the REPL, but also as HTML output in notebooks and on web
 
 ![Heatmap in Pluto][heatmap-pluto]
 
-The color scheme of the `heatmap` is customizable:
+The colormap of the `heatmap` is customizable:
 
 ![Heatmap in Documenter][heatmap-settings]
 
