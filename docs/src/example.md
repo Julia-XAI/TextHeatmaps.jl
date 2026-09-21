@@ -1,6 +1,6 @@
 # Getting started
 Let's assume you put the following text into a sentiment analysis model:
-```@example 1;
+```@example 1
 text = "I loved the concert but not the opening act"
 tokens = split(text)
 ```
@@ -8,7 +8,7 @@ tokens = split(text)
 The model returns a vector of sentiment scores for each token,
 where positive values indicate positive sentiment
 and negative values indicate negative sentiment:
-```@example 1;
+```@example 1
 val = [0.1, 2.5, 0.0, 0.3, -0.6, -1.4, 0.0, 0.1, -0.1]
 nothing #hide
 ```
