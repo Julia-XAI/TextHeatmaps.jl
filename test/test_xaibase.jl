@@ -4,6 +4,14 @@ using XAIBase
 using Test
 using ReferenceTests
 
+# StyledStrings only emits ANSI escapes for color-capable streams,
+# and downsamples truecolor to 256 colors on terminals that don't advertise truecolor (e.g. CI).
+# Pin truecolor and render with a color context
+# so the references are deterministic.
+Base.have_truecolor = true
+isdefined(@__MODULE__, :textplain) ||
+    (textplain(h) = repr("text/plain", h; context = (:color => true)))
+
 input = 42
 val = output = [1 6; 2 5; 3 4]
 text = [["Test", "Text", "Heatmap"], ["another", "dummy", "input"]]
@@ -28,27 +36,27 @@ end
 @testset "Unsigned pooling" begin
     attr = Attribution(val, input, output, output_selection, NormPooling())
     h = heatmap(attr, text)
-    @test_reference "references/norm_pooling1.txt" repr("text/plain", h[1])
-    @test_reference "references/norm_pooling2.txt" repr("text/plain", h[2])
+    @test_reference "references/norm_pooling1.txt" textplain(h[1])
+    @test_reference "references/norm_pooling2.txt" textplain(h[2])
 
     # Single samples can be passed a single text
     attr = Attribution(
         val[:, 1:1], input, output[:, 1:1], output_selection[1:1], NormPooling()
     )
     h = heatmap(attr, text[1])
-    @test_reference "references/norm_pooling1.txt" repr("text/plain", only(h))
+    @test_reference "references/norm_pooling1.txt" textplain(only(h))
 end
 
 @testset "Signed pooling" begin
     attr = Attribution(val, input, output, output_selection, SumPooling())
     h = heatmap(attr, text)
-    @test_reference "references/sum_pooling1.txt" repr("text/plain", h[1])
-    @test_reference "references/sum_pooling2.txt" repr("text/plain", h[2])
+    @test_reference "references/sum_pooling1.txt" textplain(h[1])
+    @test_reference "references/sum_pooling2.txt" textplain(h[2])
 
     # Custom pipelines
     h = heatmap(attr, text, SumPooling() |> ExtremaNormalization() |> Colormap(:seismic))
-    @test_reference "references/sum_pooling1_extrema.txt" repr("text/plain", h[1])
-    @test_reference "references/sum_pooling2_extrema.txt" repr("text/plain", h[2])
+    @test_reference "references/sum_pooling1_extrema.txt" textplain(h[1])
+    @test_reference "references/sum_pooling2_extrema.txt" textplain(h[2])
 end
 
 @testset "Feature dimension" begin
@@ -57,8 +65,8 @@ end
     val3 = permutedims(val3, (3, 1, 2)) # features sum up to `3 * val`
     attr = Attribution(val3, input, output, output_selection, SumPooling())
     h = heatmap(attr, text)
-    @test_reference "references/sum_pooling1.txt" repr("text/plain", h[1])
-    @test_reference "references/sum_pooling2.txt" repr("text/plain", h[2])
+    @test_reference "references/sum_pooling1.txt" textplain(h[1])
+    @test_reference "references/sum_pooling2.txt" textplain(h[2])
 end
 
 struct DummyAnalyzer <: AbstractXAIMethod end
@@ -68,8 +76,8 @@ end
 
 @testset "Analyzers" begin
     h = heatmap(val, DummyAnalyzer(), text)
-    @test_reference "references/sum_pooling1.txt" repr("text/plain", h[1])
-    @test_reference "references/sum_pooling2.txt" repr("text/plain", h[2])
+    @test_reference "references/sum_pooling1.txt" textplain(h[1])
+    @test_reference "references/sum_pooling2.txt" textplain(h[2])
 end
 
 @testset "Error handling" begin

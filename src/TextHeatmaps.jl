@@ -1,6 +1,6 @@
 module TextHeatmaps
 
-using Crayons: Crayon
+using StyledStrings: @styled_str, Face, SimpleColor
 using FixedPointNumbers: N0f8
 using Colors: Colorant, RGB, hex
 using ColorSchemes: ColorScheme, colorschemes, get
