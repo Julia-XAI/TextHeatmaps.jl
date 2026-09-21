@@ -35,10 +35,13 @@ end
 
 word_face(c::Colorant) = word_face(convert(RGB{N0f8}, c))
 function word_face(bg::RGB{N0f8})
-    foreground = is_background_bright(bg) ? :black : :white
-    background = SimpleColor((r = bg.r.i, g = bg.g.i, b = bg.b.i))
-    return Face(; foreground, background)
+    # Use explicit RGB rather than the named `:black`/`:white`, whose shade depends
+    # on the terminal's face theme, so terminal output matches the HTML output.
+    foreground = is_background_bright(bg) ? RGB{N0f8}(0, 0, 0) : RGB{N0f8}(1, 1, 1)
+    return Face(; foreground = simplecolor(foreground), background = simplecolor(bg))
 end
+
+simplecolor(c::RGB{N0f8}) = SimpleColor((r = c.r.i, g = c.g.i, b = c.b.i))
 
 is_background_bright(bg::RGB) = luma(bg) > 0.5
 luma(c::RGB) = 0.2126 * c.r + 0.7152 * c.g + 0.0722 * c.b # using BT. 709 coefficients
