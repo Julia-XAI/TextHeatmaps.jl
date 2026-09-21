@@ -20,6 +20,19 @@ heatmap
 default_pipeline
 ```
 
+```@meta
+CurrentModule = XAIBase
+```
+
+### Batches
+Heatmapping pipelines are applied to batches of type `XAIBase.Batch`.
+By default, transforms are applied to each sample individually:
+```@docs
+XAIBase.Batch
+XAIBase.eachsample
+XAIBase.mapsamples
+```
+
 ### Pipelines
 Transforms are composed into pipelines using `|>`.
 [`Pipeline`](@ref) and [`AbstractTransform`](@ref) are defined in XAIBase.jl
@@ -28,10 +41,6 @@ and re-exported by TextHeatmaps:
 Pipeline
 AbstractTransform
 TextHeatmaps.apply
-```
-
-```@meta
-CurrentModule = XAIBase
 ```
 
 ### [Attribution pooling](@id api-pooling)
@@ -74,15 +83,6 @@ AbstractNormalization
 XAIBase.normalize
 normalization_bounds
 default_normalization
-```
-
-### Batches
-Heatmapping pipelines are applied to batches of type `XAIBase.Batch`.
-By default, transforms are applied to each sample individually:
-```@docs
-XAIBase.Batch
-XAIBase.eachsample
-XAIBase.mapsamples
 ```
 
 ```@meta
